@@ -1,0 +1,16 @@
+{
+  "name": "report-builder",
+  "version": "1.0.0",
+  "description": "Creates HTML, Email, PDF, Image reports from JSON.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kalim Fleet <kalim.fleet@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "html-pdf": "^2.2.0",
+    "juice": "^4.2.2",
+    "webshot": "^0.18.0"
+  }
+}
