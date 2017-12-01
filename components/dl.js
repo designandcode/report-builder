@@ -12,7 +12,7 @@ var DL = function (str, data, email) {
   if (email) {
     // need extra markup
     dl = `<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td><dl class="${STYLE} ${GRADE}">`;
-    tc = '</td></tr></tbody></table';
+    tc = '</td></tr></tbody></table>';
   }
 
   dt += `<strong>${heading.label}:</strong> <span class="def-title">${heading.text}</span>`;

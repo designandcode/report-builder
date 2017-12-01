@@ -4,13 +4,15 @@
   "description": "Creates HTML, Email, PDF, Image reports from JSON.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Kalim Fleet <kalim.fleet@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.1.2",
     "html-pdf": "^2.2.0",
     "juice": "^4.2.2",
+    "mocha": "^4.0.1",
     "webshot": "^0.18.0"
   }
 }

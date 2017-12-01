@@ -126,14 +126,15 @@ function buildHTMLReport(obj) {
                 resolve(obj);
               })
             })
-          }
+          } else {
 
-          fs.writeFile(`./.tmp/${folder}/html/index.html`, inlineStyles, function(err) {
-            if (err) {
-              reject(err)
-            }
-            resolve(obj);
-          })
+            fs.writeFile(`./.tmp/${folder}/html/index.html`, inlineStyles, function(err) {
+              if (err) {
+                reject(err)
+              }
+              resolve(obj);
+            })
+          }
         })
       }
     });
@@ -213,6 +214,7 @@ function buildEmailReport(obj) {
     // Make this a shared module - it is used twice with minor differences (html or email)
     fs.readFile('css/email-style.css', function (err, style) {
       if (err) {
+        console.log(216);
         reject(err);
       } else {
         // readFileSync is gross but I just can't stand see another callback here
@@ -229,23 +231,27 @@ function buildEmailReport(obj) {
           if (err) {
             fs.mkdir(`./.tmp/${folder}/email`, function(err, success) {
               if (err) {
+                console.log(233);
                 reject(err);
               }
               fs.writeFile(`./.tmp/${folder}/email/index.html`, inlineStyles, function(err) {
                 if (err) {
+                  console.log(238)
                   reject(err)
                 }
                 resolve(obj);
               })
             })
-          }
+          } else {
 
-          fs.writeFile(`./.tmp/${folder}/email/index.html`, inlineStyles, function(err) {
-            if (err) {
-              reject(err)
-            }
-            resolve(obj);
-          })
+            fs.writeFile(`./.tmp/${folder}/email/index.html`, inlineStyles, function(err) {
+              if (err) {
+                console.log(248);
+                reject(err)
+              }
+              resolve(obj);
+            })
+          }
         })
       }
     });
@@ -309,15 +315,7 @@ function buildImgReport(obj) {
 }
 
 function buildPdfReport(obj) {
-  /*var fs = require('fs');
-  var pdf = require('html-pdf');
-  var html = fs.readFileSync('./test/businesscard.html', 'utf8');
-  var options = { format: 'Letter' };
- 
-  pdf.create(html, options).toFile('./businesscard.pdf', function(err, res) {
-    if (err) return console.log(err);
-    console.log(res); // { filename: '/app/businesscard.pdf' }
-  });*/
+  
   var {data, folder} = obj,
       options = { format: 'Legal'};
 
@@ -354,18 +352,7 @@ function buildPdfReport(obj) {
         });
       });
     })
-  })
-  /*fs.stat(`./.tmp/${folder}/pdf`, function(err) {
-    if (err) {
-      fs.mkdir(`./.tmp/${folder}/pdf`, function(err) {
-        if (err) {
-          reject(err);
-        }
-
-        fs.readFile(``)
-      })
-    }
-  })*/
+  });
 }
 
 setData()
@@ -377,12 +364,11 @@ setData()
  .catch(function(e){console.log(e.stack)});
 
 
-
-
-
-
-
-
-
-
-
+// on directory change, run these again
+/*// Example when handled through fs.watch listener
+fs.watch('./tmp', { encoding: 'buffer' }, (eventType, filename) => {
+  if (filename) {
+    console.log(filename);
+    // Prints: <Buffer ...>
+  }
+});*/

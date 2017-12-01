@@ -1,6 +1,7 @@
 var TABLE = function (str, data, email) {
+  var    STYLE = data.style || '';
 
-  var table = '<table border="0" cellspacing="0" cellpadding="0" class="inner">',
+  var table = `<table border="0" cellspacing="0" cellpadding="0" class="${STYLE} inner">`,
       head = '<thead>',
       body = '<tbody>';
 
