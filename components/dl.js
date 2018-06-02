@@ -15,7 +15,8 @@ var DL = function (str, data, email) {
     tc = '</td></tr></tbody></table>';
   }
 
-  dt += `<strong>${heading.label}:</strong> <span class="def-title">${heading.text}</span>`;
+  dt += heading.text ? `<h3>${heading.label}: <span class="def-title">${heading.text}</span></h3> `
+    : `<h3>${heading.label}</h3>`;
   dt += '</dt>';
 
   for (var k=1; k<data.data.length; k++) {

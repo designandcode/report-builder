@@ -2,6 +2,7 @@ var fs = require('fs'),
     DL = require('./components/DL.js'),
     LINKS = require('./components/LINKS.js'),
     TABLE = require('./components/TABLE.js'),
+    P = require('./components/P.js'),
  juice = require('juice'),
  webshot = require('webshot'),
  htmlPdf = require('html-pdf');
@@ -57,6 +58,8 @@ function buildHTMLReport(obj) {
   var {data, folder} = obj,
       titleText = data[0].pageName,
       pageTitle = data[0].pageTitle,
+      pageIntro = data[0].pageIntro,
+      pageConclusion = data[0].pageConclusion,
       // start building out html page
       str = 
         `<html>
@@ -68,7 +71,8 @@ function buildHTMLReport(obj) {
            </head>
            <body>
              <div class="container">
-               <h1>${pageTitle}</h1>`;
+               <h1>${pageTitle}</h1>
+                <section><p>${pageIntro || ''}</p></section>`;
 
   // start loops
   for (var i=1; i<data.length; i++) {
@@ -76,9 +80,10 @@ function buildHTMLReport(obj) {
            name = section.sectionName,
      components = section.components;
 
-    str += 
+    str += name ?
       `<section>
-        <h2>${name}</h2>`;
+        <h2>${name}</h2>`
+    : `<section>`;
 
     for (var j=0; j<components.length; j++) {
       var TYPE = components[j].type,
@@ -91,11 +96,14 @@ function buildHTMLReport(obj) {
         str += DL(str, components[j]);
       } else if (TYPE === 'LINKS') {
         str += LINKS(str, components[j]);
+      } else if (TYPE === 'P') {
+        str += P(str, components[j]);
       }
     }
     str += '</section>';
   }
-  str += '</body></html>';
+  str += `<section><p>${pageConclusion || ''}</p></section>`;
+  str += '</div></body></html>';
 
   return new Promise((resolve, reject) => {
     // Make this a shared module - it is used twice with minor differences (html or email)
@@ -151,6 +159,8 @@ function buildEmailReport(obj) {
   var {data, folder} = obj,
       titleText = data[0].pageName,
       pageTitle = data[0].pageTitle,
+      pageIntro = data[0].pageIntro,
+      pageConclusion = data[0].pageConclusion,
       // start building out email
       str = 
         `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -176,7 +186,7 @@ function buildEmailReport(obj) {
               <div class="webkit">
               <table border="0" cellspacing="0" cellpadding="0">
                 <tbody>
-                  <tr><td><h1>${pageTitle}</h1></td></tr>
+                  <tr><td><h1>${pageTitle}</h1><p>${pageIntro || ''}</p></td></tr>
                 </tbody>
               </table>`;
 
@@ -186,9 +196,10 @@ function buildEmailReport(obj) {
            name = section.sectionName,
      components = section.components;
 
-    str += 
+    str += name ?
       `<table border="0" cellspacing="0" cellpadding="0">
-        <tbody><tr><td><h2>${name}</h2></td></tr></tbody>`;
+        <tbody><tr><td><h2>${name}</h2></td></tr></tbody>`
+    : `<table border="0" cellspacing="0" cellpadding="0">`;
 
     for (var j=0; j<components.length; j++) {
       var TYPE = components[j].type,
@@ -201,12 +212,14 @@ function buildEmailReport(obj) {
         str += DL(str, components[j], email=true);
       } else if (TYPE === 'LINKS') {
         str += LINKS(str, components[j], email=true);
+      } else if (TYPE === 'P') {
+        str += P(str, components[j], email=true);
       }
     }
     str += '</table>';
   }
   
-
+  str+= `<tbody><tr><td><p>${pageConclusion || ''}</p></td></tr></tbody>`;
   str+= '</div></body></html>';
 
   
